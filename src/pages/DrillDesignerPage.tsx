@@ -206,6 +206,16 @@ const DrillDesignerPage = () => {
         const startX = e.touches ? e.touches[0].clientX : e.clientX;
         const startY = e.touches ? e.touches[0].clientY : e.clientY;
 
+        // Capture initial state
+        const element = elements.find(el => el.instanceId === instanceId);
+        if (!element) return;
+
+        const initialWidth = element.width || 5;
+        const initialHeight = element.height || 5;
+        // Max limits (30% relative to pitch container)
+        const MAX_WIDTH = 30;
+        const MAX_HEIGHT = 30;
+
         const handleMove = (moveEvent: any) => {
             const currentX = moveEvent.touches ? moveEvent.touches[0].clientX : moveEvent.clientX;
             const currentY = moveEvent.touches ? moveEvent.touches[0].clientY : moveEvent.clientY;
@@ -216,19 +226,20 @@ const DrillDesignerPage = () => {
             setElements(prev => prev.map(el => {
                 if (el.instanceId !== instanceId) return el;
 
-                // Simple aspect ratio preserving resize logic or freeform based on direction could be implemented
-                // For now, let's just add delta to width/height
-                let newWidth = (el.width || 5);
-                let newHeight = (el.height || 5);
+                let newWidth = initialWidth;
+                let newHeight = initialHeight;
 
                 if (direction.includes('e')) newWidth += deltaXPercent;
                 if (direction.includes('s')) newHeight += deltaYPercent;
-                // Add west/north logic if needed, simplified for SE corner for now
+
+                // Apply constraints
+                const clampedWidth = Math.max(2, Math.min(newWidth, MAX_WIDTH));
+                const clampedHeight = Math.max(2, Math.min(newHeight, MAX_HEIGHT));
 
                 return {
                     ...el,
-                    width: Math.max(2, newWidth),
-                    height: Math.max(2, newHeight)
+                    width: clampedWidth,
+                    height: clampedHeight
                 };
             }));
         };
@@ -428,7 +439,7 @@ const DrillDesignerPage = () => {
             </aside>
 
             {/* Main Pitch View */}
-            <main className="flex-1 relative bg-[#2d5a27] overflow-hidden">
+            <main className="flex-1 relative bg-[#2d5a27] overflow-auto">
                 {/* Navigation Back */}
                 <div className="absolute top-4 left-4 z-10">
                     <button
@@ -451,7 +462,7 @@ const DrillDesignerPage = () => {
                     onDragOver={handleDragOver}
                     onDrop={handleDrop}
                     data-pitch-background="true"
-                    className="relative w-full h-full border-4 border-white/40 m-auto flex flex-col pointer-events-auto"
+                    className="relative w-full min-h-[800px] border-4 border-white/40 m-auto flex flex-col pointer-events-auto"
                 >
                     {/* Top Goal Area */}
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-[10%] border-b-4 border-x-4 border-white/40 rounded-b-sm pointer-events-none">
@@ -533,21 +544,26 @@ const DrillDesignerPage = () => {
                                             </div>
 
                                             {/* Resize Handle (Bottom Right) */}
-                                            <div
-                                                className="absolute -bottom-2 -right-2 w-4 h-4 bg-blue-500 rounded-full shadow-lg cursor-nwse-resize z-50"
-                                                onMouseDown={(e) => handleResize(el.instanceId, e, 'se')}
-                                                onTouchStart={(e) => handleResize(el.instanceId, e, 'se')}
-                                            />
+                                            {el.type === 'shape' && (
+                                                <div
+                                                    className="absolute -bottom-2 -right-2 w-4 h-4 bg-blue-500 rounded-full shadow-lg cursor-nwse-resize z-50"
+                                                    onMouseDown={(e) => handleResize(el.instanceId, e, 'se')}
+                                                    onTouchStart={(e) => handleResize(el.instanceId, e, 'se')}
+                                                />
+                                            )}
+
+                                            {/* Delete Handle - Mobile Friendly */}
+                                            <button
+                                                onClick={(e) => { e.stopPropagation(); removeElement(el.instanceId); }}
+                                                className="absolute -top-6 -right-6 bg-red-500 rounded-full p-2 text-white shadow-xl z-50 hover:bg-red-600 active:scale-95 transition-transform"
+                                                title="Delete"
+                                            >
+                                                <X size={14} className="text-white" />
+                                            </button>
                                         </>
                                     )}
 
-                                    {/* Visual Delete Handle (Common) */}
-                                    <button
-                                        onClick={(e) => { e.stopPropagation(); removeElement(el.instanceId); }}
-                                        className="absolute -top-4 -right-4 bg-red-500 rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity z-50 shadow-sm"
-                                    >
-                                        <X size={12} className="text-white" />
-                                    </button>
+
 
                                     {/* Element Renderers */}
                                     {el.type === 'player' && (
