@@ -1,73 +1,89 @@
-# React + TypeScript + Vite
+# Football Drill Planner
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A mobile-first web application designed for football coaches to design, save, and manage professional training drills. Built with modern web technologies, it offers an intuitive touch interface for creating complex field setups and drill progressions.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+-   **Drill Management**: Create, edit, and organize football drills with details like titles, objectives, and field dimensions.
+-   **Step-by-Step Planning**: Break down drills into progressive steps to clearly communicate training flows.
+-   **Interactive Drill Designer**:
+    -   **Canvas-based Editor**: Design drills visually on a virtual pitch.
+    -   **Drag & Drop Interface**: Easily place players, equipment (cones, goals, ladders), and shapes.
+    -   **Drawing Tools**: Draw movement lines (solid/dashed) and annotated zones.
+    -   **Touch Optimized**: Full support for touch gestures (drag, resize, rotate) on mobile devices.
+-   **Local Persistence**: All drills and data are saved locally to your device, ensuring privacy and offline access.
+-   **Responsive Design**: Optimized for both mobile and desktop usage, with a focus on field usability.
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+This project is built with a modern, performance-focused stack:
 
-## Expanding the ESLint configuration
+-   **Framework**: [React 19](https://react.dev/)
+-   **Language**: [TypeScript](https://www.typescriptlang.org/)
+-   **Build Tool**: [Vite](https://vitejs.dev/)
+-   **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
+-   **Graphics/Canvas**: [Konva](https://konvajs.org/) & [react-konva](https://konvajs.org/docs/react/)
+-   **Routing**: [React Router v7](https://reactrouter.com/)
+-   **Icons**: [Lucide React](https://lucide.dev/)
+-   **UI Components**: Custom components built with accessibility in mind (using Radix UI primitives where applicable).
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Getting Started
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Prerequisites
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+-   Node.js (Latest LTS recommended)
+-   npm or pnpm
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Installation
+
+1.  Clone the repository:
+    ```bash
+    git clone <repository-url>
+    ```
+2.  Navigate to the project directory:
+    ```bash
+    cd Football-Drill
+    ```
+3.  Install dependencies:
+    ```bash
+    npm install
+    ```
+
+### Running Locally
+
+Start the development server:
+
+```bash
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+The application will be available at `http://localhost:5173`.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Building for Production
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+To create a production-ready build:
+
+```bash
+npm run build
 ```
+
+To preview the production build:
+
+```bash
+npm run preview
+```
+
+## Usage Guide
+
+1.  **Dashboard**: View your saved drills and categories.
+2.  **Create Drill**: Tap "Create New Drill" to define drill metadata (Title, Date, Objective).
+3.  **Step Editor**: Add steps to your drill. Each step represents a phase of the training.
+4.  **Designer**: Tap on a step to open the graphical editor.
+    -   Use the **Sidebar** to drag players and equipment onto the pitch.
+    -   Use the **Toolbar** to toggle drawing modes.
+    -   Tap an element to select it for resizing, rotating, or deleting.
+    -   Changes are auto-saved to the local state.
+
+## License
+
+Private Project.

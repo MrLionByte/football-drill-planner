@@ -22,3 +22,24 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# API Keys & Env Variables
+.env
+.env.test
+.env.production
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Testing
+coverage/
+
+# OS specific
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Agent/AI
+.gemini/
+.agent/
